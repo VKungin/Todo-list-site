@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <h1>{{ object|yesno:"Update,Create" }} Task</h1>
+  <form action="" method="post" novalidate>
+    {% csrf_token %}
+    content: {{ form.content }}<br>
+    experience date: <input type="date" name="experience_date" value="{{ form.experience_date.value|date:'Y-m-d' }}"><br>
+    status: {{ form.done }}<br>
+    tags: {{ form.tags }}<br>
+    <input type="submit" value="Submit" class="btn btn-primary">
+  </form>
+{% endblock %}

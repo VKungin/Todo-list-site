@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+  <div class="d-flex justify-content-between align-items-center">
+    <h1> TODO list </h1>
+    <a href="{% url 'todo_list:task-create' %}" class="btn btn-primary mx-auto d-block">
+      Add task
+    </a>
+  </div>
+    <ul class="list-unstyled">
+      {% for task in task_list %}
+        <li class="border-bottom py-3">
+          <h4>
+            {{ task.content }}
+            {% if task.done %}
+              <span class="text-success font-weight-bold">Done</span>
+            {% else %}
+              <span class="text-danger font-weight-bold">Not done</span>
+            {% endif %}
+          </h4>
+
+          <div class="align-items-center">
+            <div>
+              Created: {{ task.published_date }} Deadline: {{ task.experience_date }}
+              <br>
+              Tags:
+              {% for tag in task.tags.all %}
+                {{tag.name }}
+              {% endfor %}
+            </div>
+            <div>
+              <a style="float: left" href="{% url 'todo_list:task-update' pk=task.id %}" class="btn btn-secondary mr-2">
+                update
+              </a>
+              <a style="float: left" href="{% url 'todo_list:task-delete' pk=task.id %}" class="btn btn-secondary">
+                delete
+              </a>
+            </div>
+          </div>
+          <form action="{% url 'todo_list:task-update-done' pk=task.id %}" method="post">
+            {% csrf_token %}
+            <div class="text-center">
+              <button type="submit" class="btn {% if task.done %}btn-secondary{% else %}btn-success{% endif %}">
+                {% if task.done %}Undo{% else %}Done{% endif %}
+              </button>
+            </div>
+          </form>
+
+        </li>
+      {% endfor %}
+    </ul>
+{% endblock %}
